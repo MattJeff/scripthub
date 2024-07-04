@@ -30,3 +30,23 @@ __pycache__/
 .env.*
 *.sqlite3
 *.db
+
+# Environnements locaux
+.env
+
+# Fichiers de cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Dossiers spécifiques à l'IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Dossiers temporaires
+tmp/
+

@@ -21,3 +21,18 @@ docs/
 .git/
 .gitignore
 
+# Documentation
+docs/
+*.md
+
+# Tests
+tests/
+
+# Fichiers de cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Fichiers de configuration locaux
+.env
