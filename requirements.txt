@@ -3,4 +3,4 @@ requests
 instaloader
 openai-whisper
 gunicorn
-
+boto3
