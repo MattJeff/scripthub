@@ -1,4 +1,5 @@
 import instaloader
+from s3_utils import upload_file_to_s3, download_file_from_s3
 import os
 
 def get_instagram_profile_info(username, num_videos):
@@ -66,3 +67,14 @@ def get_video_info(post):
         'comments': post.comments
     }
     return video_info
+def process_video(file_path):
+    # Logique pour traiter la vidéo et extraire le script
+    script = transcrire_video(file_path)
+    
+    # Uploader le fichier vers S3 après traitement
+    upload_file_to_s3(file_path)
+    
+    # Supprimer le fichier local pour économiser de l'espace
+    os.remove(file_path)
+    
+    return script

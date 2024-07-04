@@ -1,5 +1,13 @@
 from flask import Blueprint, request, jsonify
-from .scraper import get_instagram_profile_info, download_instagram_video, get_video_info
+from .scraper import get_instagram_profile_info, download_instagram_video, get_video_info, process_video
+from .whisper_transcriber import transcrire_video
+import requests
+from .bubble_api import add_creator, add_video
+
+main = Blueprint('main', __name__)
+
+from flask import Blueprint, request, jsonify
+from .scraper import get_instagram_profile_info, download_instagram_video, process_video
 from .whisper_transcriber import transcrire_video
 import requests
 from .bubble_api import add_creator, add_video
@@ -16,10 +24,10 @@ def add_creator_route():
         return jsonify({'error': 'Missing username or user_id'}), 400
 
     response = add_creator(user_id, username)
-    if 'status' in response and response['status'] == 'success':
+    if response.get('status') == 'success':
         return jsonify({'message': 'Creator added successfully'}), 201
     else:
-        return jsonify({'error': response.get('message', 'Unknown error')}), 400
+        return jsonify({'error': response.get('message')}), 400
 
 @main.route('/track_creator', methods=['POST'])
 def track_creator():
@@ -35,12 +43,13 @@ def track_creator():
 
     if status_code == 200:
         videos_info = []
-        creator_id = get_creator_id(username)  # Obtenez le creator_id depuis Bubble
+        # Assumer que vous avez une méthode pour obtenir creator_id depuis Bubble
+        creator_id = ...  # Obtenez le creator_id depuis Bubble
         for video_file_path, post in video_file_paths:
-            script = transcrire_video(video_file_path)
+            script = process_video(video_file_path)  # Utilisation de la fonction pour traiter et uploader la vidéo
             video_info = get_video_info(post)
             response = add_video(creator_id, post.url, script, post.likes, post.video_view_count, post.comments)
-            if 'status' in response and response['status'] == 'success':
+            if response.get('status') == 'success':
                 videos_info.append(video_info)
         return jsonify({'videos': videos_info}), 200
     else:
@@ -64,12 +73,13 @@ def track_videos():
 
     if video_file_paths:
         videos_info = []
-        creator_id = get_creator_id_from_url(video_urls[0])  # Obtenez le creator_id depuis Bubble
+        # Assumer que vous avez une méthode pour obtenir creator_id depuis Bubble
+        creator_id = ...  # Obtenez le creator_id depuis Bubble
         for video_file_path, post in video_file_paths:
-            script = transcrire_video(video_file_path)
+            script = process_video(video_file_path)  # Utilisation de la fonction pour traiter et uploader la vidéo
             video_info = get_video_info(post)
             response = add_video(creator_id, post.url, script, post.likes, post.video_view_count, post.comments)
-            if 'status' in response and response['status'] == 'success':
+            if response.get('status') == 'success':
                 videos_info.append(video_info)
         return jsonify({'videos': videos_info}), 200
     else:
