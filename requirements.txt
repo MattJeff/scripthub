@@ -3,4 +3,6 @@ requests
 instaloader
 openai-whisper
 gunicorn
+boto3
+python-dotenv
 
