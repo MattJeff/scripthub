@@ -4,3 +4,4 @@ instaloader
 openai-whisper
 gunicorn
 boto3
+SQLAlchemy
