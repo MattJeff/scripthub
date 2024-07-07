@@ -6,6 +6,10 @@ from .bubble_api import add_creator, add_video
 
 main = Blueprint('main', __name__)
 
+@main.route('/')
+def index():
+    return jsonify(message="Welcome to the Instagram Scraper API")
+
 @main.route('/add_creator', methods=['POST'])
 def add_creator_route():
     data = request.json
