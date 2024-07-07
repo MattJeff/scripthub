@@ -6,14 +6,6 @@ from .bubble_api import add_creator, add_video
 
 main = Blueprint('main', __name__)
 
-from flask import Blueprint, request, jsonify
-from .scraper import get_instagram_profile_info, download_instagram_video, process_video
-from .whisper_transcriber import transcrire_video
-import requests
-from .bubble_api import add_creator, add_video
-
-main = Blueprint('main', __name__)
-
 @main.route('/add_creator', methods=['POST'])
 def add_creator_route():
     data = request.json
@@ -43,8 +35,10 @@ def track_creator():
 
     if status_code == 200:
         videos_info = []
-        # Assumer que vous avez une méthode pour obtenir creator_id depuis Bubble
-        creator_id = ...  # Obtenez le creator_id depuis Bubble
+        creator_id = get_creator_id(username)  # Obtenez le creator_id depuis Bubble
+        if not creator_id:
+            return jsonify({'error': 'Creator ID not found'}), 404
+        
         for video_file_path, post in video_file_paths:
             script = process_video(video_file_path)  # Utilisation de la fonction pour traiter et uploader la vidéo
             video_info = get_video_info(post)
@@ -67,18 +61,20 @@ def track_videos():
     for url in video_urls:
         result, status_code = download_instagram_video(url)
         if status_code == 200:
-            video_file_paths.append(result)
+            video_file_paths.append((result, url))
         else:
             return jsonify({'error': result}), status_code
 
     if video_file_paths:
         videos_info = []
-        # Assumer que vous avez une méthode pour obtenir creator_id depuis Bubble
-        creator_id = ...  # Obtenez le creator_id depuis Bubble
-        for video_file_path, post in video_file_paths:
+        for video_file_path, url in video_file_paths:
+            creator_id = get_creator_id_from_url(url)  # Obtenez le creator_id depuis l'URL de la vidéo
+            if not creator_id:
+                return jsonify({'error': f'Creator ID not found for URL: {url}'}), 404
+
             script = process_video(video_file_path)  # Utilisation de la fonction pour traiter et uploader la vidéo
-            video_info = get_video_info(post)
-            response = add_video(creator_id, post.url, script, post.likes, post.video_view_count, post.comments)
+            video_info = get_video_info(url)  # Assurez-vous que get_video_info fonctionne avec l'URL
+            response = add_video(creator_id, url, script, video_info['likes'], video_info['video_view_count'], video_info['comments'])
             if response.get('status') == 'success':
                 videos_info.append(video_info)
         return jsonify({'videos': videos_info}), 200
@@ -94,10 +90,14 @@ def get_creator_id(username):
     return None
 
 def get_creator_id_from_url(url):
-    # Logique pour obtenir le creator_id à partir de l'URL de la vidéo
     username = extract_username_from_url(url)
     return get_creator_id(username)
 
 def extract_username_from_url(url):
     # Logique pour extraire le nom d'utilisateur à partir de l'URL de la vidéo
-    pass
+    # Exemple simple pour l'extraction
+    import re
+    match = re.search(r'instagram\.com\/([^\/]+)\/', url)
+    if match:
+        return match.group(1)
+    return None
