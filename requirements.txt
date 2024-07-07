@@ -1,6 +1,8 @@
+
 Flask
 requests
 instaloader
 gunicorn
 boto3
 SQLAlchemy
+python-dotenv
