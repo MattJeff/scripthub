@@ -4,7 +4,7 @@ from flask import Flask
 
 def install_openai_whisper():
     try:
-        subprocess.check_call([os.sys.executable, "-m", "pip", "install", "openai-whisper"])
+        subprocess.check_call([os.sys.executable, "-m", "pip3", "install", "openai-whisper"])
     except subprocess.CalledProcessError as e:
         print(f"Failed to install openai-whisper: {e}")
 
