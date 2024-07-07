@@ -35,3 +35,10 @@ __pycache__/
 
 # Fichiers de configuration locaux
 .env
+.git/
+__pycache__/
+*.pyc
+.env
+venv/
+tests/
+large_files/
