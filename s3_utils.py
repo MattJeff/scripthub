@@ -1,5 +1,9 @@
 import boto3
-from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_STORAGE_BUCKET_NAME
+from config import Config
+
+AWS_ACCESS_KEY_ID = Config.AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY = Config.AWS_SECRET_ACCESS_KEY
+AWS_STORAGE_BUCKET_NAME = Config.AWS_STORAGE_BUCKET_NAME
 
 s3 = boto3.client(
     's3',
