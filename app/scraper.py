@@ -1,5 +1,4 @@
 import instaloader
-from s3_utils import upload_file_to_s3, download_file_from_s3
 import os
 
 def get_instagram_profile_info(username, num_videos):
@@ -9,9 +8,6 @@ def get_instagram_profile_info(username, num_videos):
         profile = instaloader.Profile.from_username(L.context, username)
         if profile.is_private:
             return "Erreur : Le profil est privé et ne peut pas être consulté.", 403
-
-        nombre_reels = profile.mediacount
-        num_videos = min(num_videos, nombre_reels)
 
         videos = []
         for post in profile.get_posts():
@@ -57,24 +53,3 @@ def download_instagram_video(url):
         return "Erreur : La vidéo n'existe pas. Veuillez vérifier le lien et réessayer.", 404
     except Exception as e:
         return f"Une erreur est survenue : {e}", 500
-
-def get_video_info(post):
-    video_info = {
-        'url': post.url,
-        'creator': post.owner_username,
-        'likes': post.likes,
-        'views': post.video_view_count,
-        'comments': post.comments
-    }
-    return video_info
-def process_video(file_path):
-    # Logique pour traiter la vidéo et extraire le script
-    script = transcrire_video(file_path)
-    
-    # Uploader le fichier vers S3 après traitement
-    upload_file_to_s3(file_path)
-    
-    # Supprimer le fichier local pour économiser de l'espace
-    os.remove(file_path)
-    
-    return script
