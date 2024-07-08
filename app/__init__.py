@@ -22,8 +22,3 @@ def create_app():
 
 # Installer openai-whisper dynamiquement au démarrage
 install_openai_whisper()
-
-app = create_app()
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)))
