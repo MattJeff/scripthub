@@ -27,5 +27,3 @@ def create_app():
 
 # Installer openai-whisper dynamiquement au démarrage
 install_openai_whisper()
-
-app = create_app()
