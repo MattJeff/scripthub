@@ -1,6 +1,7 @@
 import os
 import subprocess
 from flask import Flask
+#from ..celery_config import celery_app
 
 def install_openai_whisper():
     try:
@@ -9,7 +10,10 @@ def install_openai_whisper():
         print(f"Failed to install openai-whisper: {e}")
 
 def create_app():
+    print("Application is starting...")
     app = Flask(__name__)
+    print("Flask app created.")
+
 
     # Configuration de l'application
     app.config.from_object('config.Config')
@@ -22,3 +26,9 @@ def create_app():
 
 # Installer openai-whisper dynamiquement au démarrage
 install_openai_whisper()
+
+app = create_app()
+
+# Initialiser Celery avec l'application Flask
+#celery_app.conf.update(app.config)
+

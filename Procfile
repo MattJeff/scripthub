@@ -1,2 +1,3 @@
-web: gunicorn run: run.py
+gunicorn run:app --timeout 300
+
 

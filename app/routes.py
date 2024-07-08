@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from .scraper import get_instagram_profile_info, download_instagram_video
 from .whisper_transcriber import transcrire_video
+#from ..celery_config import celery_app
 
 main = Blueprint('main', __name__)
 
