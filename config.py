@@ -4,6 +4,7 @@ import os
 load_dotenv()  # Charger les variables d'environnement à partir du fichier .env
 
 class Config:
+    DEBUG = False
     SECRET_KEY = os.getenv('SECRET_KEY')
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
     AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
