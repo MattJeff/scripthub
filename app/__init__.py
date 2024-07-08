@@ -29,6 +29,3 @@ def create_app():
 install_openai_whisper()
 
 app = create_app()
-
-# Initialiser Celery avec l'application Flask (si nécessaire)
-# celery_app.conf.update(app.config)

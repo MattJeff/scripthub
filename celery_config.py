@@ -1,10 +1,10 @@
-from celery import Celery
+#from celery import Celery
 
-def make_celery(app_name=__name__):
-    return Celery(
-        app_name,
-        backend='redis://localhost:6379/0',
-        broker='redis://localhost:6379/0'
-    )
-
-celery_app = make_celery()
+#def make_celery(app_name=__name__):
+#    return Celery(
+#        app_name,
+#        backend='redis://localhost:6379/0',
+#        broker='redis://localhost:6379/0'
+#    )
+#
+#celery_app = make_celery()
