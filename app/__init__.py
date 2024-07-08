@@ -22,8 +22,10 @@ def create_app():
     # Enregistrer les blueprints
     from .routes import main as main_blueprint
     app.register_blueprint(main_blueprint)
+    
+    # Installer openai-whisper dynamiquement au démarrage
+    install_openai_whisper()
 
     return app
 
-# Installer openai-whisper dynamiquement au démarrage
-install_openai_whisper()
+
