@@ -11,33 +11,48 @@ def index():
 
 @main.route('/get_scripts_by_influencer', methods=['POST'])
 def get_scripts_by_influencer():
-    data = request.json
-    username = data.get('username')
-    num_videos = data.get('num_videos')
+    try:
+        data = request.json
+        username = data.get('username')
+        num_videos = data.get('num_videos')
 
-    if not username or not num_videos:
-        return jsonify({'error': 'Missing username or num_videos'}), 400
+        # Debug: afficher les données reçues
+        print(f"Received data: {data}")
 
-    num_videos = int(num_videos)
-    video_file_paths, status_code = get_instagram_profile_info(username, num_videos)
+        if not username or not num_videos:
+            return jsonify({'error': 'Missing username or num_videos'}), 400
 
-    if status_code == 200:
-        scripts_info = []
-        for video_file_path, post in video_file_paths:
-            script = transcrire_video(video_file_path)
-            video_info = {
-                'url': post.url,
-                'script': script,
-                'likes': post.likes,
-                'views': post.video_view_count,
-                'comments': post.comments,
-                'creator': post.owner_username,
-                'date': post.date_utc.isoformat()
-            }
-            scripts_info.append(video_info)
-        return jsonify({'scripts': scripts_info}), 200
-    else:
-        return jsonify({'error': video_file_paths}), status_code
+        num_videos = int(num_videos)
+
+        # Debug: afficher les valeurs des variables
+        print(f"Username: {username}, Num Videos: {num_videos}")
+
+        video_file_paths, status_code = get_instagram_profile_info(username, num_videos)
+
+        # Debug: afficher le résultat de get_instagram_profile_info
+        print(f"Video file paths: {video_file_paths}, Status code: {status_code}")
+
+        if status_code == 200:
+            scripts_info = []
+            for video_file_path, post in video_file_paths:
+                script = transcrire_video(video_file_path)
+                video_info = {
+                    'url': post.url,
+                    'script': script,
+                    'likes': post.likes,
+                    'views': post.video_view_count,
+                    'comments': post.comments,
+                    'creator': post.owner_username,
+                    'date': post.date_utc.isoformat()
+                }
+                scripts_info.append(video_info)
+            return jsonify({'scripts': scripts_info}), 200
+        else:
+            return jsonify({'error': video_file_paths}), status_code
+    except Exception as e:
+        # Debug: afficher l'exception
+        print(f"Exception: {e}")
+        return jsonify({'error': str(e)}), 500
 
 @main.route('/get_scripts_by_url', methods=['POST'])
 def get_scripts_by_url():
