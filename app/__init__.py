@@ -1,15 +1,9 @@
 import os
-import subprocess
 from flask import Flask
 
-def install_openai_whisper():
-    try:
-        import whisper
-    except ImportError:
-        try:
-            subprocess.check_call([os.sys.executable, "-m", "pip", "install", "openai-whisper"])
-        except subprocess.CalledProcessError as e:
-            print(f"Failed to install openai-whisper: {e}")
+def install_dependencies():
+    import subprocess
+    subprocess.call([os.sys.executable, "-m", "pip", "install", "openai-whisper"])
 
 def create_app():
     print("Application is starting...")
@@ -24,8 +18,6 @@ def create_app():
     app.register_blueprint(main_blueprint)
     
     # Installer openai-whisper dynamiquement au démarrage
-    install_openai_whisper()
+    install_dependencies()
 
     return app
-
-
