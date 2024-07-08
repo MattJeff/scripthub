@@ -1,2 +1,2 @@
 release: python install_dependencies.py
-web: gunicorn --timeout 300 run:app
+web: gunicorn --timeout 120 run:app

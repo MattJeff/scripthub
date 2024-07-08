@@ -26,8 +26,7 @@ def create_app():
     return app
 
 # Installer openai-whisper dynamiquement au démarrage
-# Note: This is not necessary as the dependency will be installed separately now.
-# install_openai_whisper()
+install_openai_whisper()
 
 app = create_app()
 
